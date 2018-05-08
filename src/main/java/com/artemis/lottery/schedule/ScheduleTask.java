@@ -2,10 +2,13 @@ package com.artemis.lottery.schedule;
 
 import com.artemis.lottery.domain.FootballTeam;
 import com.artemis.lottery.domain.TeamEnum;
+import com.artemis.lottery.event.LotteryEvent;
 import com.artemis.lottery.service.BuildData;
 import com.artemis.lottery.service.FootballTeamService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,10 +23,14 @@ import java.util.Set;
  * @date 2018-05-08 15:34
  */
 @Component
+@Slf4j
 public class ScheduleTask {
 
     @Autowired
     private FootballTeamService footballTeamService;
+
+    @Autowired
+    private ApplicationContext context;
 
     /**
      * 初始化奖励
@@ -43,6 +50,7 @@ public class ScheduleTask {
 
         FootballTeam footballTeam = footballTeamService.findFootballTeam();
         if (footballTeam == null) {
+            log.debug("没有待开奖信息");
             return;
         }
 
@@ -61,8 +69,11 @@ public class ScheduleTask {
         footballTeam.setWinnerTeam(TeamEnum.getName(i));
         footballTeam.setStatus(1);
 
+        log.debug("本期开奖结果是 {}" + footballTeam);
+
         footballTeamService.save(footballTeam);
 
         //TODO 广播开奖数据 查找谁开奖了
+        context.publishEvent(new LotteryEvent(this, footballTeam));
     }
 }

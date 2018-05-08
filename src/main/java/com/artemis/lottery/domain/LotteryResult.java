@@ -17,19 +17,4 @@ public class LotteryResult {
 
     private String teamName;
 
-    public Set<String> getPlayerNumbers() {
-        return playerNumbers;
-    }
-
-    public void setPlayerNumbers(Set<String> playerNumbers) {
-        this.playerNumbers = playerNumbers;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
 }
