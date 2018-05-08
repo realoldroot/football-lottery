@@ -26,13 +26,6 @@ public class ReadyController {
     @Autowired
     private FootballTeamService footballTeamService;
 
-    /**
-     * 初始化接口，为客户端提供 22个球员和两个队色
-     */
-    @GetMapping("/initialization")
-    public void init() {
-        footballTeamService.initFootballTeam();
-    }
 
     @GetMapping("/currentTeam")
     public FootballTeam currentTeam() {

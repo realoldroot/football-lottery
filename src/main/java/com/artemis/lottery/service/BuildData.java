@@ -1,12 +1,11 @@
 package com.artemis.lottery.service;
 
 import com.artemis.lottery.domain.FootballTeam;
+import com.artemis.lottery.domain.TeamEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 初始化数据
@@ -23,7 +22,7 @@ public class BuildData {
     private static final String TEAM_B = "b_";
 
 
-    public static Set<String> buildPlayerNumber() {
+    private static List<String> buildPlayerNumber() {
 
         Set<String> set = new HashSet<>();
         Random random = new Random();
@@ -36,14 +35,15 @@ public class BuildData {
             set.add(TEAM_B + RandomUtils.nextInt(1, 30));
         }
 
-        return set;
+        return new ArrayList<>(set);
     }
 
     public static FootballTeam buildTeam() {
 
         FootballTeam fb = new FootballTeam();
         fb.setId(System.currentTimeMillis());
-        fb.setPlayerNumbers(buildPlayerNumber());
+        fb.setPlayers(buildPlayerNumber());
+        fb.setTeams(new String[]{TeamEnum.TEAM_A.getName(), TeamEnum.TEAM_B.getName()});
 
         return fb;
     }

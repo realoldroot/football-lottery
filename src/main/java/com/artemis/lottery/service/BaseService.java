@@ -1,7 +1,5 @@
 package com.artemis.lottery.service;
 
-import org.springframework.data.domain.Page;
-
 import java.util.List;
 
 /**
@@ -14,7 +12,4 @@ public interface BaseService<T> {
     void save(T t);
 
     void saveAll(List<T> t);
-
-    Page<T> page(int page, int pageSize);
-
 }

@@ -12,5 +12,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface FootballTeamRepository extends MongoRepository<FootballTeam, Long> {
 
+    FootballTeam findByStatus(int status);
 
 }

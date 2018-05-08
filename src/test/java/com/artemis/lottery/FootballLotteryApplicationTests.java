@@ -3,6 +3,7 @@ package com.artemis.lottery;
 import com.artemis.lottery.domain.ChoiceTeam;
 import com.artemis.lottery.domain.FootballTeam;
 import com.artemis.lottery.repository.FootballTeamRepository;
+import com.artemis.lottery.schedule.ScheduleTask;
 import com.artemis.lottery.service.BuildData;
 import com.artemis.lottery.service.ChoiceTeamService;
 import com.artemis.lottery.service.FootballTeamService;
@@ -66,6 +67,23 @@ public class FootballLotteryApplicationTests {
     public void findTeam() {
         FootballTeam footballTeam = footballTeamService.findFootballTeam();
         System.out.println(footballTeam);
+    }
+
+
+    @Test
+    public void build() {
+        FootballTeam footballTeam = BuildData.buildTeam();
+        footballTeamService.save(footballTeam);
+    }
+
+
+    @Autowired
+    private ScheduleTask scheduleTask;
+
+    @Test
+    public void lottery() {
+
+        scheduleTask.lottery();
     }
 
 }

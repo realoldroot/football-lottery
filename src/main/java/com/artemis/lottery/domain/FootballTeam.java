@@ -3,7 +3,7 @@ package com.artemis.lottery.domain;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * 足球队
@@ -16,10 +16,38 @@ import java.util.Set;
 public class FootballTeam {
 
     @Id
-    public Long id;
+    private Long id;
 
-    //球员号
-    public Set<String> playerNumbers;
+    /**
+     * 标题
+     */
+    private String title;
+
+    /**
+     * 参赛球员
+     */
+    private List<String> players;
+
+    /**
+     * 球队名称
+     */
+    private String[] teams;
+
+    /**
+     * 数据状态
+     */
+    private int status;
+
+    /**
+     * 中奖的球员
+     */
+    private List<String> winners;
+
+    /**
+     * 中奖的球队
+     */
+    private String winnerTeam;
+
 
     public Long getId() {
         return id;
@@ -29,20 +57,51 @@ public class FootballTeam {
         this.id = id;
     }
 
-
-    public Set<String> getPlayerNumbers() {
-        return playerNumbers;
+    public String getTitle() {
+        return title;
     }
 
-    public void setPlayerNumbers(Set<String> playerNumbers) {
-        this.playerNumbers = playerNumbers;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "FootballTeam{" +
-                "id=" + id +
-                ", playerNumbers=" + playerNumbers +
-                '}';
+    public List<String> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<String> players) {
+        this.players = players;
+    }
+
+    public String[] getTeams() {
+        return teams;
+    }
+
+    public void setTeams(String[] teams) {
+        this.teams = teams;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public List<String> getWinners() {
+        return winners;
+    }
+
+    public void setWinners(List<String> winners) {
+        this.winners = winners;
+    }
+
+    public String getWinnerTeam() {
+        return winnerTeam;
+    }
+
+    public void setWinnerTeam(String winnerTeam) {
+        this.winnerTeam = winnerTeam;
     }
 }
