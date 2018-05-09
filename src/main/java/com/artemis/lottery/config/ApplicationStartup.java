@@ -21,6 +21,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        log.debug("ApplicationStartup --------------> ");
         // repository.deleteAll();
         // repository.saveAll(BuildData.build());
         // log.debug("初始化执行。。。");
