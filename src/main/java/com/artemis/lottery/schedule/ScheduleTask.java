@@ -9,9 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,8 +24,9 @@ import java.util.Set;
  * @author zhengenshen
  * @date 2018-05-08 15:34
  */
-@Component
 @Slf4j
+@Component
+@Lazy(value = false)
 public class ScheduleTask {
 
     @Autowired
@@ -34,10 +37,14 @@ public class ScheduleTask {
 
     /**
      * 初始化奖励
+     * <p>
+     * cron表达式：* * * * * *（共6位，使用空格隔开，具体如下）
+     * cron表达式：*(秒0-59) *(分钟0-59) *(小时0-23) *(日期1-31) *(月份1-12或是JAN-DEC) *(星期1-7或是SUN-SAT)
+     * 注意： 30 * * * * * 表示每分钟的第30秒执行，而（*斜杠30）表示每30秒执行
      */
+    // @Scheduled(cron = "0 0 3 * * ?")
     public void initTeam() {
-        FootballTeam footballTeam = BuildData.buildTeam();
-        footballTeamService.save(footballTeam);
+        footballTeamService.saveAll(BuildData.build());
     }
 
     /**
@@ -46,13 +53,22 @@ public class ScheduleTask {
      * 取出来 选手的号码。
      * 随机取出来3个号码 和1个获胜队伍，更新数据
      */
+    // @Scheduled(cron = "0 10 * * * ?")
     public void lottery() {
 
-        FootballTeam footballTeam = footballTeamService.findFootballTeam();
+        String yyyyMMddHHmm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+        long id = Long.parseLong(yyyyMMddHHmm) / 10 * 10;
+        log.debug(id + "");
+        FootballTeam footballTeam = footballTeamService.findById(id);
         if (footballTeam == null) {
             log.debug("没有待开奖信息");
             return;
         }
+        if (footballTeam.getStatus() == 1) {
+            log.debug("第{}期已经开奖", id);
+            return;
+        }
+        log.debug("开奖，第{}期", id);
 
         List<String> list = footballTeam.getPlayers();
         Set<String> set = new HashSet<>();
@@ -65,15 +81,15 @@ public class ScheduleTask {
         //随机获胜球队
         int i = RandomUtils.nextInt(0, 2);
 
-        footballTeam.setWinners(new ArrayList<>(set));
+        footballTeam.setWinners(set);
         footballTeam.setWinnerTeam(TeamEnum.getName(i));
         footballTeam.setStatus(1);
 
-        log.debug("本期开奖结果是 {}" + footballTeam);
+        log.debug("本期开奖结果是 {}", footballTeam);
 
         footballTeamService.save(footballTeam);
 
-        //TODO 广播开奖数据 查找谁开奖了
+        // 广播开奖数据 查找谁开奖了
         context.publishEvent(new LotteryEvent(this, footballTeam));
     }
 }

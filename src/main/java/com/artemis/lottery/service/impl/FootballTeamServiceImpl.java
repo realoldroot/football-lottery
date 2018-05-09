@@ -4,7 +4,6 @@ import com.artemis.lottery.domain.FootballTeam;
 import com.artemis.lottery.repository.FootballTeamRepository;
 import com.artemis.lottery.service.FootballTeamService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,5 +26,9 @@ public class FootballTeamServiceImpl extends AbstractBaseService<FootballTeamRep
         return r.findByStatus(0);
     }
 
+    @Override
+    public FootballTeam findById(Long id) {
+        return r.findById(id).orElse(null);
+    }
 
 }

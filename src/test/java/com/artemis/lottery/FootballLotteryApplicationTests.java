@@ -4,7 +4,6 @@ import com.artemis.lottery.domain.ChoiceTeam;
 import com.artemis.lottery.domain.FootballTeam;
 import com.artemis.lottery.repository.FootballTeamRepository;
 import com.artemis.lottery.schedule.ScheduleTask;
-import com.artemis.lottery.service.BuildData;
 import com.artemis.lottery.service.ChoiceTeamService;
 import com.artemis.lottery.service.FootballTeamService;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -29,13 +29,6 @@ public class FootballLotteryApplicationTests {
     @Autowired
     private FootballTeamService footballTeamService;
 
-    @Test
-    public void save() {
-
-        FootballTeam footballTeam = BuildData.buildTeam();
-
-        repository.save(footballTeam);
-    }
 
     @Autowired
     private FootballTeamRepository repository;
@@ -70,13 +63,6 @@ public class FootballLotteryApplicationTests {
     }
 
 
-    @Test
-    public void build() {
-        FootballTeam footballTeam = BuildData.buildTeam();
-        footballTeamService.save(footballTeam);
-    }
-
-
     @Autowired
     private ScheduleTask scheduleTask;
 
@@ -84,6 +70,15 @@ public class FootballLotteryApplicationTests {
     public void lottery() {
 
         scheduleTask.lottery();
+    }
+
+    @Test
+    public void update() {
+        Optional<FootballTeam> byId = repository.findById(201805090000L);
+        FootballTeam footballTeam = byId.get();
+        footballTeam.setWinnerTeam("123213");
+
+        repository.save(footballTeam);
     }
 
 }

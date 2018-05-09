@@ -15,4 +15,7 @@ public interface FootballTeamService extends BaseService<FootballTeam> {
 
     @Nullable
     FootballTeam findFootballTeam();
+
+    FootballTeam findById(Long id);
+
 }

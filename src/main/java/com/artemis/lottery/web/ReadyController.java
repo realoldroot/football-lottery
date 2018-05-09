@@ -33,7 +33,7 @@ public class ReadyController {
     }
 
 
-    @PostMapping("/bet")
+    @PostMapping("/save")
     public void bet(@RequestBody ChoiceTeam team) {
         choiceTeamService.save(team);
     }

@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 足球队
@@ -41,7 +42,7 @@ public class FootballTeam {
     /**
      * 中奖的球员
      */
-    private List<String> winners;
+    private Set<String> winners;
 
     /**
      * 中奖的球队

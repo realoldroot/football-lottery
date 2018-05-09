@@ -16,8 +16,8 @@
                 <pattern>${PATTERN}</pattern>
             </encoder>
         </appender>
-        <!--<logger name="com.km.controller" level="debug"/>-->
-        <root level="all">
+        <logger name="com.artemis" level="debug"/>
+        <root level="info">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
