@@ -10,6 +10,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,12 +36,14 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new IdleStateHandler(0, 0, 1800, TimeUnit.SECONDS));
         pipeline.addLast(new HeartbeatHandler());
 
-        pipeline.addLast(new StringDecoder());
-        pipeline.addLast(new StringEncoder());
+        pipeline.addLast(new StringDecoder(Charset.forName("UTF-8")));
+        pipeline.addLast(new StringEncoder(Charset.forName("UTF-8")));
 
-        pipeline.addLast(new JsonHandler());
+        pipeline.addLast(new JsonInboundHandler());
 
         pipeline.addLast(new MessageHandler(group));
+
+        pipeline.addLast(new JsonOutboundHandler());
 
 
         // pipeline.addLast(new HttpServerCodec());

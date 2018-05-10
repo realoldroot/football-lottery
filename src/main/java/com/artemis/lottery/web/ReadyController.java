@@ -4,6 +4,7 @@ import com.artemis.lottery.domain.ChoiceTeam;
 import com.artemis.lottery.domain.FootballTeam;
 import com.artemis.lottery.service.ChoiceTeamService;
 import com.artemis.lottery.service.FootballTeamService;
+import com.artemis.lottery.socket.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

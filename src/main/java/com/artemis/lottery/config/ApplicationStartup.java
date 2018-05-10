@@ -1,6 +1,7 @@
 package com.artemis.lottery.config;
 
 import com.artemis.lottery.repository.FootballTeamRepository;
+import com.artemis.lottery.service.BuildData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -22,8 +23,8 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         log.debug("ApplicationStartup --------------> ");
-        // repository.deleteAll();
-        // repository.saveAll(BuildData.build());
-        // log.debug("初始化执行。。。");
+        repository.deleteAll();
+        repository.saveAll(BuildData.build());
+        log.debug("初始化执行。。。");
     }
 }

@@ -2,6 +2,7 @@ package com.artemis.lottery.event;
 
 import com.artemis.lottery.domain.ChoiceTeam;
 import com.artemis.lottery.domain.FootballTeam;
+import com.artemis.lottery.domain.Response;
 import com.artemis.lottery.repository.ChoiceTeamRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class LotteryListener {
             log.debug("没有人中奖");
         }
 
-        //TODO 广播中奖人是谁。。中多少钱。。
+        Response r = new Response();
+        r.setCode(0);
+        r.setMessage("没有消息");
+        r.setData(team);
     }
 }

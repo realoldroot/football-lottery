@@ -10,6 +10,7 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.ImmediateEventExecutor;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import java.net.InetSocketAddress;
@@ -24,7 +25,9 @@ import java.net.InetSocketAddress;
 @Service
 public class Server {
 
-    private final ChannelGroup channelGroup = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
+    @Getter
+    private static final ChannelGroup channelGroup = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
+
     private final EventLoopGroup bossGroup = new NioEventLoopGroup();
     private final EventLoopGroup workGroup = new NioEventLoopGroup();
     private Channel channel;

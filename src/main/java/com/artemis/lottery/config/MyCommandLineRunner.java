@@ -24,7 +24,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
     public void run(String... args) {
 
         log.debug("启动时加载----------------------->");
-        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 9999);
+        InetSocketAddress address = new InetSocketAddress("192.168.0.120", 9999);
         ChannelFuture future = server.start(address);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> server.destroy()));

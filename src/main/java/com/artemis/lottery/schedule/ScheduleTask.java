@@ -10,6 +10,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -53,7 +54,7 @@ public class ScheduleTask {
      * 取出来 选手的号码。
      * 随机取出来3个号码 和1个获胜队伍，更新数据
      */
-    // @Scheduled(cron = "0 10 * * * ?")
+    @Scheduled(cron = "0 */10 * * * ?")
     public void lottery() {
 
         String yyyyMMddHHmm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
