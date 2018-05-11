@@ -25,6 +25,5 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         log.debug("ApplicationStartup --------------> ");
         repository.deleteAll();
         repository.saveAll(BuildData.build());
-        log.debug("初始化执行。。。");
     }
 }

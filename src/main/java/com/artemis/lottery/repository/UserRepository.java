@@ -3,6 +3,8 @@ package com.artemis.lottery.repository;
 import com.artemis.lottery.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 /**
  * 用户
  *
@@ -12,4 +14,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
+    Optional<User> findByUsernameAndPassword(String username, String password);
 }

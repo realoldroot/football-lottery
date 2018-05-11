@@ -23,7 +23,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        log.debug("启动时加载----------------------->");
+        log.debug("MyCommandLineRunner----------------------->");
         InetSocketAddress address = new InetSocketAddress("192.168.0.120", 9999);
         ChannelFuture future = server.start(address);
 

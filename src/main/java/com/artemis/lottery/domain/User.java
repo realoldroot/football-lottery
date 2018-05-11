@@ -19,8 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
-    private String passwordHash;
-    private String passwordSalt;
+    private String password;
     private String nickname;
     private Integer score;
     private Long createTime;

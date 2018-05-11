@@ -16,4 +16,13 @@ public class Response {
     private String message;
 
     private Object data;
+
+    public Response(Object data) {
+        this.code = 0;
+        this.message = "成功";
+        this.data = data;
+    }
+
+    public Response() {
+    }
 }

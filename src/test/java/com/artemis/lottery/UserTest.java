@@ -2,6 +2,7 @@ package com.artemis.lottery;
 
 import com.artemis.lottery.domain.User;
 import com.artemis.lottery.repository.UserRepository;
+import com.artemis.lottery.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,22 @@ public class UserTest {
     public void save() {
         User user = new User();
         user.setUsername("18310860399");
-        user.setPasswordHash("123");
-        user.setPasswordSalt("321");
+        user.setPassword("123");
         user.setNickname("甄");
         user.setCreateTime(System.currentTimeMillis());
         repository.save(user);
+    }
+
+
+    @Autowired
+    private UserService userService;
+
+    @Test
+    public void find() throws Exception {
+        User user = new User();
+        user.setUsername("181");
+        user.setPassword("12");
+        User login = userService.login(user);
+        System.out.println(login);
     }
 }
