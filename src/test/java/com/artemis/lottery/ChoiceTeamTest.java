@@ -51,14 +51,6 @@ public class ChoiceTeamTest {
     @Autowired
     private ChoiceTeamRepository repository;
 
-    @Test
-    public void search() {
-
-        Set<String> collect = Stream.of("b_10", "b_11", "r_12").collect(Collectors.toSet());
-        ChoiceTeam red = repository.findByNoAndTeamNameAndPlayerNumbers(2018050910L, "red", collect);
-        System.out.println(red);
-    }
-
     @Autowired
     private ScheduleTask scheduleTask;
 
