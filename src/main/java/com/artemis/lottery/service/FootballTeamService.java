@@ -18,4 +18,14 @@ public interface FootballTeamService extends BaseService<FootballTeam> {
 
     FootballTeam findById(Long id);
 
+    /**
+     * 当前时间的一期
+     */
+    FootballTeam findCurrentTeam();
+
+    /**
+     * 当前时间的 下一期
+     */
+    FootballTeam findNextTeam();
+
 }

@@ -33,7 +33,7 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
 
         //处理心跳
-        pipeline.addLast(new IdleStateHandler(0, 0, 1800, TimeUnit.SECONDS));
+        pipeline.addLast(new IdleStateHandler(400, 400, 400, TimeUnit.SECONDS));
         pipeline.addLast(new HeartbeatHandler());
 
         pipeline.addLast(new StringDecoder(Charset.forName("UTF-8")));

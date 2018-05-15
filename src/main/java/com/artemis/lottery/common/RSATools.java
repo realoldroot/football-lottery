@@ -19,19 +19,9 @@ import java.security.spec.X509EncodedKeySpec;
 
 public class RSATools {
 
-    private static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLQ+YZMYATbNDl5jKJ0s4vd+99/u0DYC8" +
-            "zq+EzXHFkSbKhGF8EoqRly6dsbbfcetTN0711x6o5pYnpoYQNWi98KdxvfX8R/NcmyuBkUeNBHNCM85F5lvFH7XSivyliFAhV9jYQcMo" +
-            "Jn+K3bm1otOVTujTprnIH8ZncI9nyNyxIFQIDAQAB";
+    public static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9tTYOtvyDwq/5olB20/+5kEsx8wMvqJpM+C9SF783nZi3k1Z/VJB9yatdYqgLVvHG8BWuIoqWR+/7qwz5lsSrGR6WaHSlPDm361ffR3Ng9fqeM+wNSOjzt5UV/qwWHzT2R+JcP9r015tlj7TcxDB+NnDdS1Numtyb3p7qV44GAwIDAQAB";
 
-    private static final String PRIVATE_KEY = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAItD5hkxgBNs0OXmMonSzi" +
-            "93733+7QNgLzOr4TNccWRJsqEYXwSipGXLp2xtt9x61M3TvXXHqjmliemhhA1aL3wp3G99fxH81ybK4GRR40Ec0IzzkXmW8UftdKK/KW" +
-            "IUCFX2NhBwygmf4rdubWi05VO6NOmucgfxmdwj2fI3LEgVAgMBAAECgYAeke8GhLkqim5oqNlbK60a+mbV74mzff+ehhJPJfG2I/9UIX" +
-            "dqGxGfTs8XnBYKDeR8sggavJN/R/k4Eb5c9/kIIVllq1WMBflTSWA9l1b1+CpFqESXmxClPBpffwst6jtetCT+Tgm+NNXc28AtgZoRqz" +
-            "YK0cjH6YD9YAcSAJARmQJBAOzDDUqyKhws3SWNGr0ikY+eNZae+Gu8QvwlhbxBAkI21bV6oNJaAQDwj3Eq/bvWfquhSHK68iLKHFfDE9" +
-            "VXEMsCQQCWlMrI7wM4KEo9BN13M/l85F3Ll7dg8Zsw4UoLFNhNgcMrxmPI3Dkw734NnMtj+nO7DT2ns+xN/qQyXhWEkU6fAkBoezcNZI" +
-            "xSvLWm0ZsgJfYoc7/gRS0Jlh3VWdWnmuSdRcePe5sm2NMikAYtAbTRRLnHkbf/8WHTWm+hhxPkjLR7AkAhc5aFAsvlStYLLiyA0bQH8b" +
-            "eAhgi/6Yx/VF0djxjqRvxzmhQKyBmQbHPFVGK+qCHTmQJsYgUJ4prZcZs4IwujAkB3M0308xiN5Ylvy5iYA4HrOkul6eR48qUExqFWCa" +
-            "iP5Ya98kas9ogT6e0sq3HGo5BLeY0ITn9C792jvVIhya0d";
+    private static final String PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAL21Ng62/IPCr/miUHbT/7mQSzHzAy+omkz4L1IXvzedmLeTVn9UkH3Jq11iqAtW8cbwFa4iipZH7/urDPmWxKsZHpZodKU8ObfrV99Hc2D1+p4z7A1I6PO3lRX+rBYfNPZH4lw/2vTXm2WPtNzEMH42cN1LU26a3JvenupXjgYDAgMBAAECgYAYKK2brh32QaLbbZpFp7XXUdLhp4ruVNBhoPGVyMRnNsCuECthx8km27nhCKFR4F6l8QkxxeBURxD+wcfDOToOP6R/VJrGXjl53y/tvyp8/P5HSFTYbZaGZEhJbWBTQ4IUv8OUmyvy2InFuKtVIECXGYlmrMqfo9AEdlho9oSTMQJBAPGlQPMCovoR/loYnXtxIAN5N/rK2ZTwwiFesB1P0DoxFvts9Eaj4quDZDOruUPsjVG0m1yPjwcAqtY8E7Fj8nUCQQDI+iHVFOp8j+OCGb7Zb8C/nDMKkEcTReuwJC/YGsvhidh+cjRrTZWvS6a8n9+5wYmknNdtxkCtFUrVUZ8KW5eXAkEAy26I+Ex+8jIVxLm2UsbQ4bu6QftmI7pwZHF3qKWZsnPDWlXGbHXqDORnhgyKwsEx09hNdyYwjf+k0wjut0diRQJBAIqndvvo6DVzl8REOtUMMnB/NP+OtlpnnMjyzkdLhWlejov+AogdCK3dhXUQ32rqSSnWQxIq+qfuzqgJHa4prpUCQBcUNEvJq3u8mld3t2/2yPkzdU7szz0AdXQJA+dz8hUFcEJp6zLBVc3a6+i5fRn6NrJP2FGIxMDnV8dppszVQTg=";
 
     /**
      * 指定加密算法为RSA
@@ -43,7 +33,7 @@ public class RSATools {
      *
      * @param source 源数据
      */
-    private static String encrypt(String source, String key) throws Exception {
+    public static String encrypt(String source, String key) throws Exception {
 
         PublicKey publicKey = getPublicKey(key);
 
@@ -118,4 +108,18 @@ public class RSATools {
     public static String encode(String password) throws Exception {
         return decrypt(password, PUBLIC_KEY);
     }
+
+
+    public static String byteToString(byte[] bytes) {
+        StringBuilder strHexString = new StringBuilder();
+        for (byte bt : bytes) {
+            String hex = Integer.toHexString(0xff & bt);
+            if (hex.length() == 1) {
+                strHexString.append('0');
+            }
+            strHexString.append(hex);
+        }
+        return strHexString.toString();
+    }
+
 }

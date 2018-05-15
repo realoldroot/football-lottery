@@ -30,5 +30,5 @@ public interface UserService extends BaseService<User> {
      * @param nickname 昵称
      * @throws Exception e
      */
-    void register(String username, String password, int sms, String nickname) throws Exception;
+    User register(String username, String password, int sms, String nickname) throws Exception;
 }

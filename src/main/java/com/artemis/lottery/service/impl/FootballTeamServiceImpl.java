@@ -6,6 +6,10 @@ import com.artemis.lottery.service.FootballTeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * 球队
  *
@@ -29,6 +33,22 @@ public class FootballTeamServiceImpl extends AbstractBaseService<FootballTeamRep
     @Override
     public FootballTeam findById(Long id) {
         return r.findById(id).orElse(null);
+    }
+
+    @Override
+    public FootballTeam findCurrentTeam() {
+        String yyyyMMddHHmm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+        long id = Long.parseLong(yyyyMMddHHmm) / 10 * 10;
+        log.debug(id + "");
+        return r.findById(id).orElseThrow(() -> new EntityNotFoundException("没有这一期"));
+    }
+
+    @Override
+    public FootballTeam findNextTeam() {
+        String yyyyMMddHHmm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+        long id = (Long.parseLong(yyyyMMddHHmm) / 10 + 1) * 10;
+        log.debug(id + "");
+        return r.findById(id).orElseThrow(() -> new EntityNotFoundException("没有这一期"));
     }
 
 }

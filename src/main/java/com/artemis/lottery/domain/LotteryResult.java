@@ -2,6 +2,7 @@ package com.artemis.lottery.domain;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,8 +14,14 @@ import java.util.Set;
 @Data
 public class LotteryResult {
 
-    private Set<String> playerNumbers;
+    private List<String> players;
 
-    private String teamName;
+    private String[] teams;
+
+    private Set<String> winners;
+
+    private String winnerTeam;
+
+    private List<String> users;
 
 }

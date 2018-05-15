@@ -35,4 +35,13 @@ public class DecodeAndVerify {
         }
 
     }
+
+    public static String decode(String password) throws Exception {
+        try {
+            return RSATools.decode(password);
+        } catch (Exception e) {
+            log.error("RSA解密失败");
+            throw new Exception("密码错误");
+        }
+    }
 }

@@ -39,14 +39,6 @@ public class ChoiceTeamTest {
         choiceTeamService.save(team);
     }
 
-    @Test
-    public void update() {
-        ChoiceTeam team = repository.findByUsername("18310860399");
-        team.setNo(2018050910L);
-        Set<String> collect = Stream.of("b_10", "b_11", "r_12").collect(Collectors.toSet());
-        team.setPlayerNumbers(collect);
-        repository.save(team);
-    }
 
     @Autowired
     private ChoiceTeamRepository repository;

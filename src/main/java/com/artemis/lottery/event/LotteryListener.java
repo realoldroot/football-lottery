@@ -2,6 +2,7 @@ package com.artemis.lottery.event;
 
 import com.artemis.lottery.domain.ChoiceTeam;
 import com.artemis.lottery.domain.FootballTeam;
+import com.artemis.lottery.domain.LotteryResult;
 import com.artemis.lottery.domain.Response;
 import com.artemis.lottery.repository.ChoiceTeamRepository;
 import com.artemis.lottery.socket.Server;
@@ -36,20 +37,23 @@ public class LotteryListener {
 
         List<ChoiceTeam> win = repository.findByNoAndTeamNameAndPlayerNumbers(team.getId(), team.getWinnerTeam(), team.getWinners());
 
+        LotteryResult l = new LotteryResult();
+        l.setPlayers(team.getPlayers());
+        l.setTeams(team.getTeams());
+        l.setWinners(team.getWinners());
+        l.setWinnerTeam(team.getWinnerTeam());
+
+
         if (win == null || win.size() == 0) {
-            log.debug("没有人中奖");
+            log.debug("没有人中奖，随机中奖人");
             List<String> sss = Stream.of("183****0399", "183****0391").collect(Collectors.toList());
+
+            l.setUsers(sss);
 
             Response r = new Response();
             r.setCode(1);
-            r.setData(team);
-            Server.getChannelGroup().write(r);
-
-            Response r2 = new Response();
-            r2.setCode(2);
-            r2.setData(sss);
-            Server.getChannelGroup().writeAndFlush(r2);
-
+            r.setData(l);
+            Server.getChannelGroup().writeAndFlush(r);
             return;
         }
         log.debug("中奖的人有 {}", win);
@@ -57,13 +61,8 @@ public class LotteryListener {
         List<String> users = win.stream().map(ChoiceTeam::getUsername).collect(Collectors.toList());
         Response r = new Response();
         r.setCode(1);
-        r.setData(team);
-        Server.getChannelGroup().write(r);
-
-        Response r2 = new Response();
-        r.setCode(2);
-        r.setData(users);
-        Server.getChannelGroup().writeAndFlush(r2);
+        l.setUsers(users);
+        Server.getChannelGroup().writeAndFlush(l);
     }
 
     private void notice(List<String> users) {

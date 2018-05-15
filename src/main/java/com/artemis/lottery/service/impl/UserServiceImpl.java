@@ -6,6 +6,7 @@ import com.artemis.lottery.common.SMSTools;
 import com.artemis.lottery.domain.User;
 import com.artemis.lottery.repository.UserRepository;
 import com.artemis.lottery.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,15 @@ import javax.persistence.EntityNotFoundException;
  * @date 2018-05-11 14:14
  */
 
+@Slf4j
 @Service
 public class UserServiceImpl extends AbstractBaseService<UserRepository, User> implements UserService {
 
     @Autowired
     private SMSTools smsTools;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * 登陆
@@ -52,14 +57,22 @@ public class UserServiceImpl extends AbstractBaseService<UserRepository, User> i
      * @throws Exception e
      */
     @Override
-    public void register(String username, String password, int sms, String nickname) throws Exception {
+    public User register(String username, String password, int sms, String nickname) throws Exception {
 
-        smsTools.verify(username, sms);
+        // smsTools.verify(username, sms);
 
-        String[] hash = PasswordHash.createHash(password);
+        String decode = DecodeAndVerify.decode(password);
+
+        String[] hash = PasswordHash.createHash(decode);
 
         User user = new User(username, hash[0], hash[1], nickname);
 
+        //暂时免费送1w分
+        user.setScore(10000);
+
+        userRepository.save(user);
+
+        return user;
     }
 
 }

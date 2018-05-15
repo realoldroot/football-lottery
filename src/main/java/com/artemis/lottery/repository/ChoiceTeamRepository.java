@@ -4,6 +4,7 @@ import com.artemis.lottery.domain.ChoiceTeam;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -15,7 +16,9 @@ import java.util.Set;
 
 public interface ChoiceTeamRepository extends MongoRepository<ChoiceTeam, Long> {
 
-    ChoiceTeam findByUsername(String username);
+    Optional<ChoiceTeam> findByUsername(String username);
+
+    Optional<ChoiceTeam> findByUsernameAndNo(String username, Long no);
 
     List<ChoiceTeam> findByNoAndTeamNameAndPlayerNumbers(Long no, String teamName, Set<String> playerNumbers);
 }

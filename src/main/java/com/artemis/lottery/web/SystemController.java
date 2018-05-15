@@ -1,7 +1,11 @@
 package com.artemis.lottery.web;
 
+import com.artemis.lottery.config.TokenTools;
+import com.artemis.lottery.domain.RespUser;
 import com.artemis.lottery.domain.User;
 import com.artemis.lottery.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import java.util.Map;
  * @author zhengenshen
  * @date 2018-05-11 14:48
  */
+@Api
 @Slf4j
 @RestController
 @RequestMapping("/system")
@@ -26,23 +31,36 @@ public class SystemController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TokenTools tokenTools;
+
     @PostMapping("/login")
-    public User login(@RequestBody UserParams params) throws Exception {
+    public RespUser login(@RequestBody UserParams params) throws Exception {
 
-        User response = userService.login(params.getUsername(), params.getPassword());
+        User user = userService.login(params.getUsername(), params.getPassword());
 
-        log.debug("成功 登陆 {}", response);
+        log.debug("成功 登陆 {}", user);
 
-        return response;
+        RespUser r = new RespUser(user);
+        r.setToken(tokenTools.build(user.getUsername()));
+
+        return r;
 
     }
 
+    @ApiOperation("注册")
     @PostMapping("/register")
-    public void register(@RequestBody UserParams params) throws Exception {
+    public RespUser register(@RequestBody UserParams params) throws Exception {
 
-        userService.register(params.getUsername(), params.getPassword(), params.getSms(),params.getNickname());
+        User user = userService.register(params.getUsername(), params.getPassword(), params.getSms(), params.getNickname());
+
+        RespUser r = new RespUser(user);
+        r.setToken(tokenTools.build(user.getUsername()));
+
+        return r;
     }
 
+    @ApiOperation("发送短信")
     @PostMapping("/sms")
     public User sms(@RequestBody Map<String, String> map) {
         //TODO
@@ -50,7 +68,7 @@ public class SystemController {
     }
 
     @Data
-    public class UserParams {
+    private static class UserParams {
 
         private String username;
         private String password;
