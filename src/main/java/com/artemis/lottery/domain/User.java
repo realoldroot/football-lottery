@@ -19,8 +19,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
-    private String password;
+    private String passwordHash;
+    private String passwordSalt;
     private String nickname;
     private Integer score;
     private Long createTime;
+
+    public User() {
+    }
+
+    public User(String username, String passwordHash, String passwordSalt, String nickname) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.passwordSalt = passwordSalt;
+        this.nickname = nickname;
+        this.createTime = System.currentTimeMillis();
+    }
 }
