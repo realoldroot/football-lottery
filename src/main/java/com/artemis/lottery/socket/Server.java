@@ -11,6 +11,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.ImmediateEventExecutor;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.InetSocketAddress;
@@ -25,8 +26,11 @@ import java.net.InetSocketAddress;
 @Service
 public class Server {
 
+    @Autowired
+    private ServerInitializer serverInitializer;
+
     @Getter
-    private static final ChannelGroup channelGroup = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
+    protected static final ChannelGroup group = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
 
     private final EventLoopGroup bossGroup = new NioEventLoopGroup();
     private final EventLoopGroup workGroup = new NioEventLoopGroup();
@@ -36,7 +40,7 @@ public class Server {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new ServerInitializer(channelGroup))
+                .childHandler(serverInitializer)
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 
@@ -51,7 +55,7 @@ public class Server {
             channel.close();
         }
 
-        channelGroup.close();
+        group.close();
         workGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();
     }

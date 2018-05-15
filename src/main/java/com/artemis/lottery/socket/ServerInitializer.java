@@ -2,13 +2,14 @@ package com.artemis.lottery.socket;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
@@ -17,14 +18,14 @@ import java.util.concurrent.TimeUnit;
  * @author zhengenshen
  * @date 2018-05-09 17:00
  */
-
+@Component
 public class ServerInitializer extends ChannelInitializer<SocketChannel> {
 
-    private final ChannelGroup group;
+    @Autowired
+    private MessageHandler messageHandler;
 
-    ServerInitializer(ChannelGroup channelGroup) {
-        this.group = channelGroup;
-    }
+    @Autowired
+    private JsonInboundHandler jsonInboundHandler;
 
     @Override
     protected void initChannel(SocketChannel ch) {
@@ -39,9 +40,9 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new StringDecoder(Charset.forName("UTF-8")));
         pipeline.addLast(new StringEncoder(Charset.forName("UTF-8")));
 
-        pipeline.addLast(new JsonInboundHandler());
+        pipeline.addLast(jsonInboundHandler);
 
-        pipeline.addLast(new MessageHandler(group));
+        pipeline.addLast(messageHandler);
 
         pipeline.addLast(new JsonOutboundHandler());
 

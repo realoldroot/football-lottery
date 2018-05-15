@@ -16,7 +16,7 @@ def login():
 
 
 def currentTeam():
-    url = base_url + '/lottery/currentTeam'
+    url = base_url + '/lottery/next'
     r = requests.get(url)
     print(r.status_code)
     print(r.text)

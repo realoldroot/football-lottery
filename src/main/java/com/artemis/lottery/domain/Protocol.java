@@ -8,7 +8,7 @@ import lombok.Data;
  */
 
 @Data
-public class Connection {
+public class Protocol {
 
     private int type;
 
@@ -16,5 +16,5 @@ public class Connection {
 
     private String token;
 
-    //{"type":0,"username":"123123","token":"aaaaaaa"}
+    //{"type":0,"username":"123123","token":"a1c6132291083fc95c4770b26d6581d569fa461192a675bd3874f157ad54e446"}
 }

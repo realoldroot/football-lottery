@@ -6,13 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 
 /**
  * @author zhengenshen
  * @date 2018-05-09 10:40
  */
 @Slf4j
-// @Component
+@Component
 public class ApplicationStartup implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired

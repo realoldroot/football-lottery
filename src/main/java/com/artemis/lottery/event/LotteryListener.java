@@ -53,7 +53,7 @@ public class LotteryListener {
             Response r = new Response();
             r.setCode(1);
             r.setData(l);
-            Server.getChannelGroup().writeAndFlush(r);
+            Server.getGroup().writeAndFlush(r);
             return;
         }
         log.debug("中奖的人有 {}", win);
@@ -62,12 +62,12 @@ public class LotteryListener {
         Response r = new Response();
         r.setCode(1);
         l.setUsers(users);
-        Server.getChannelGroup().writeAndFlush(l);
+        Server.getGroup().writeAndFlush(l);
     }
 
     private void notice(List<String> users) {
 
 
-        Server.getChannelGroup().writeAndFlush(users);
+        Server.getGroup().writeAndFlush(users);
     }
 }
