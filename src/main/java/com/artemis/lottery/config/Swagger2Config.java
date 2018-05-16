@@ -30,9 +30,10 @@ public class Swagger2Config {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("足彩接口")
-                .description("没有描述")
+                .description("tcp 端口暂时是9999")
+                .description("除了/system/**接口之外的其他接口，都要在请求头里加上 authentication 属性，值为登陆成功之后返回的token")
                 // .termsOfServiceUrl("")
-                // .contact(new Contact("csdn大师兄", "http://blog.csdn.net/qq_27093465", "cmshome@163.com"))
+                //  .contact(new Contact("csdn大师兄", "http://blog.csdn.net/qq_27093465", "cmshome@163.com"))
                 // .license("")
                 // .licenseUrl("")
                 .version("1.0")

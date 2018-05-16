@@ -24,8 +24,8 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String auth = request.getHeader("auth");
-        log.debug("auth    {}", auth);
+        String authentication = request.getHeader("authentication");
+        log.debug("authentication    {}", authentication);
         return true;
     }
 }

@@ -52,6 +52,7 @@ public class LotteryController {
         choiceTeamService.save(team);
     }
 
+    @ApiOperation("根据期号查询下注信息")
     @GetMapping("/query")
     public void query(@RequestBody QueryParams params) {
         lotteryService.query(params.getNo(), params.getUsername());
