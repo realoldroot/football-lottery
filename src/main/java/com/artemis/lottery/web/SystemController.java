@@ -1,10 +1,9 @@
 package com.artemis.lottery.web;
 
-import com.artemis.lottery.common.SMSTools;
 import com.artemis.lottery.common.TokenTools;
+import com.artemis.lottery.domain.LoginUsers;
 import com.artemis.lottery.domain.RespUser;
-import com.artemis.lottery.domain.User;
-import com.artemis.lottery.service.UserService;
+import com.artemis.lottery.service.LoginUsersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
@@ -27,47 +26,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/system")
 public class SystemController {
 
+
     @Autowired
-    private UserService userService;
+    private LoginUsersService loginUsersService;
 
     @Autowired
     private TokenTools tokenTools;
 
-    @Autowired
-    private SMSTools smsTools;
 
     @ApiOperation("登陆")
     @PostMapping("/login")
     public RespUser login(@RequestBody UserParams params) throws Exception {
 
-        User user = userService.login(params.getUsername(), params.getPassword());
+        LoginUsers login = loginUsersService.login(params.username, params.password);
 
-        log.debug("成功 登陆 {}", user);
+        log.debug("成功 登陆 {}", login);
 
-        RespUser r = new RespUser(user);
-        r.setToken(tokenTools.build(user.getUsername()));
-
-        return r;
-
-    }
-
-    @ApiOperation("注册")
-    @PostMapping("/register")
-    public RespUser register(@RequestBody UserParams params) throws Exception {
-
-        User user = userService.register(params.getUsername(), params.getPassword(), params.getSms(), params.getNickname());
-
-        RespUser r = new RespUser(user);
-        r.setToken(tokenTools.build(user.getUsername()));
+        RespUser r = new RespUser();
+        r.setToken(tokenTools.build(login.getBcPhone()));
 
         return r;
-    }
 
-    @ApiOperation("发送短信")
-    @PostMapping("/sms")
-    public UserParams sms(@RequestBody UserParams params) throws Exception {
-        params.setSms(smsTools.sendSms(params.getUsername()));
-        return params;
     }
 
     @Data

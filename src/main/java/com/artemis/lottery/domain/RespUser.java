@@ -16,12 +16,6 @@ public class RespUser {
     private String token;
 
 
-    public RespUser(User u) {
-        this.username = u.getUsername();
-        this.nickname = u.getNickname();
-        this.scores = u.getScore();
-    }
-
     public RespUser() {
     }
 }
