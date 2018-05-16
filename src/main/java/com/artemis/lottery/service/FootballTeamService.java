@@ -1,7 +1,6 @@
 package com.artemis.lottery.service;
 
 import com.artemis.lottery.domain.FootballTeam;
-import com.sun.istack.internal.Nullable;
 
 /**
  * 球队
@@ -13,7 +12,6 @@ import com.sun.istack.internal.Nullable;
 public interface FootballTeamService extends BaseService<FootballTeam> {
 
 
-    @Nullable
     FootballTeam findFootballTeam();
 
     FootballTeam findById(Long id);

@@ -7,12 +7,11 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhengenshen
@@ -21,11 +20,16 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class ServerInitializer extends ChannelInitializer<SocketChannel> {
 
-    @Autowired
-    private MessageHandler messageHandler;
 
     @Autowired
     private JsonInboundHandler jsonInboundHandler;
+
+    @Autowired
+    private AuthenticationHandler authenticationHandler;
+
+    @Autowired
+    private MessageHandler messageHandler;
+
 
     @Override
     protected void initChannel(SocketChannel ch) {
@@ -34,24 +38,19 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
 
         //处理心跳
-        pipeline.addLast(new IdleStateHandler(400, 400, 400, TimeUnit.SECONDS));
-        pipeline.addLast(new HeartbeatHandler());
+        // pipeline.addLast(new IdleStateHandler(400, 400, 400, TimeUnit.SECONDS));
+        // pipeline.addLast(new HeartbeatHandler());
+        ch.pipeline().addLast(new ReadTimeoutHandler(120));
 
         pipeline.addLast(new StringDecoder(Charset.forName("UTF-8")));
         pipeline.addLast(new StringEncoder(Charset.forName("UTF-8")));
 
         pipeline.addLast(jsonInboundHandler);
-
+        pipeline.addLast(authenticationHandler);
         pipeline.addLast(messageHandler);
 
         pipeline.addLast(new JsonOutboundHandler());
 
 
-        // pipeline.addLast(new HttpServerCodec());
-        // pipeline.addLast(new ChunkedWriteHandler());
-        // pipeline.addLast(new HttpObjectAggregator(64 * 1024));
-        // pipeline.addLast(new HttpRequestHandler("/ws"));
-        // pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
-        // pipeline.addLast(new TextWebSocketFrameHandler(group));
     }
 }

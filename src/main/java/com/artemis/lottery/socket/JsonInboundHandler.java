@@ -1,14 +1,12 @@
 package com.artemis.lottery.socket;
 
 import com.artemis.lottery.common.JsonTools;
-import com.artemis.lottery.config.TokenTools;
 import com.artemis.lottery.domain.Protocol;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -25,31 +23,25 @@ import java.io.IOException;
 @ChannelHandler.Sharable
 public class JsonInboundHandler extends ChannelInboundHandlerAdapter {
 
-    @Autowired
-    private TokenTools tokenTools;
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        log.debug("JsonHandler -> {}", msg);
+        log.debug("JsonHandler -------> {}", msg);
         Channel channel = ctx.channel();
         Protocol c;
         try {
             c = JsonTools.toBean(msg.toString(), Protocol.class);
-            if (c.getType() == 1) {
-                if (tokenTools.has(c.getToken())) {
-                    //校验成功 保存连接
-                    Server.group.add(channel);
-                } else {
-                    log.error("token不存在 {}", c);
-                    channel.close();
-                }
-            } else {
-                ctx.fireChannelRead(c);
-            }
-
+            ctx.fireChannelRead(c);
         } catch (IOException e) {
             log.error("json解析错误 {}", msg);
+            OnlineManage.online(channel);
             channel.close();
         }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        log.debug("*******************异常了{}", ctx.channel().id().asLongText());
+        OnlineManage.offline(ctx.channel());
+        ctx.close();
     }
 }

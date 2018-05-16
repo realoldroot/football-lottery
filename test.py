@@ -1,6 +1,6 @@
 import requests, json
 
-base_url = 'http://localhost:8080'
+base_url = 'http://localhost:9000'
 
 
 def login():
@@ -23,4 +23,4 @@ def currentTeam():
 
 
 if __name__ == '__main__':
-    currentTeam()
+    login()

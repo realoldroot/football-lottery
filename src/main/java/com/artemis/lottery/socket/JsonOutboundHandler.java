@@ -17,7 +17,6 @@ public class JsonOutboundHandler extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        log.debug("走到这里了");
         String json = JsonTools.toJson(msg);
         super.write(ctx, json, promise);
     }

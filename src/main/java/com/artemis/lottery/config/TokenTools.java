@@ -1,6 +1,7 @@
 package com.artemis.lottery.config;
 
 import com.artemis.lottery.common.SHATools;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -31,5 +32,20 @@ public class TokenTools {
 
     public boolean has(String username) {
         return redisTemplate.hasKey(TOKEN_KEY + username);
+    }
+
+    public String get(String username) {
+        return redisTemplate.opsForValue().get(TOKEN_KEY + username);
+    }
+
+    /**
+     * 校验 token是否正确
+     *
+     * @param username 用户
+     * @param token    token
+     * @return true false
+     */
+    public boolean verifyToken(String username, String token) {
+        return StringUtils.equals(get(username), token);
     }
 }

@@ -5,7 +5,7 @@ import com.artemis.lottery.domain.FootballTeam;
 import com.artemis.lottery.domain.LotteryResult;
 import com.artemis.lottery.domain.Response;
 import com.artemis.lottery.repository.ChoiceTeamRepository;
-import com.artemis.lottery.socket.Server;
+import com.artemis.lottery.socket.OnlineManage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -53,7 +53,7 @@ public class LotteryListener {
             Response r = new Response();
             r.setCode(1);
             r.setData(l);
-            Server.getGroup().writeAndFlush(r);
+            OnlineManage.broadcast(r);
             return;
         }
         log.debug("中奖的人有 {}", win);
@@ -62,12 +62,10 @@ public class LotteryListener {
         Response r = new Response();
         r.setCode(1);
         l.setUsers(users);
-        Server.getGroup().writeAndFlush(l);
+        OnlineManage.broadcast(l);
     }
 
     private void notice(List<String> users) {
-
-
-        Server.getGroup().writeAndFlush(users);
+        OnlineManage.broadcast(users);
     }
 }

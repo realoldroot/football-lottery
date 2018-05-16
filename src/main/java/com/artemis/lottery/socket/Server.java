@@ -5,12 +5,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.concurrent.ImmediateEventExecutor;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +24,6 @@ public class Server {
 
     @Autowired
     private ServerInitializer serverInitializer;
-
-    @Getter
-    protected static final ChannelGroup group = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
 
     private final EventLoopGroup bossGroup = new NioEventLoopGroup();
     private final EventLoopGroup workGroup = new NioEventLoopGroup();
@@ -55,7 +48,7 @@ public class Server {
             channel.close();
         }
 
-        group.close();
+        OnlineManage.close();
         workGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();
     }
