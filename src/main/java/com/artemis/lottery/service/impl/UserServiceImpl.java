@@ -59,7 +59,7 @@ public class UserServiceImpl extends AbstractBaseService<UserRepository, User> i
     @Override
     public User register(String username, String password, int sms, String nickname) throws Exception {
 
-        // smsTools.verify(username, sms);
+        smsTools.verify(username, sms);
 
         String decode = DecodeAndVerify.decode(password);
 

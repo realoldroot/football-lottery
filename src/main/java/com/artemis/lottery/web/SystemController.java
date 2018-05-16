@@ -1,6 +1,7 @@
 package com.artemis.lottery.web;
 
-import com.artemis.lottery.config.TokenTools;
+import com.artemis.lottery.common.SMSTools;
+import com.artemis.lottery.common.TokenTools;
 import com.artemis.lottery.domain.RespUser;
 import com.artemis.lottery.domain.User;
 import com.artemis.lottery.service.UserService;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 /**
  * 系统
@@ -33,6 +32,9 @@ public class SystemController {
 
     @Autowired
     private TokenTools tokenTools;
+
+    @Autowired
+    private SMSTools smsTools;
 
     @PostMapping("/login")
     public RespUser login(@RequestBody UserParams params) throws Exception {
@@ -62,9 +64,9 @@ public class SystemController {
 
     @ApiOperation("发送短信")
     @PostMapping("/sms")
-    public User sms(@RequestBody Map<String, String> map) {
-        //TODO
-        return null;
+    public UserParams sms(@RequestBody UserParams params) throws Exception {
+        params.setSms(smsTools.sendSms(params.getUsername()));
+        return params;
     }
 
     @Data

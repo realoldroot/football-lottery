@@ -1,6 +1,6 @@
 package com.artemis.lottery.socket;
 
-import com.artemis.lottery.config.TokenTools;
+import com.artemis.lottery.common.TokenTools;
 import com.artemis.lottery.domain.Protocol;
 import com.artemis.lottery.domain.Response;
 import io.netty.channel.ChannelHandler;

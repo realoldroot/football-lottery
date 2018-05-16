@@ -1,6 +1,6 @@
 package com.artemis.lottery.interceptor;
 
-import com.artemis.lottery.config.TokenTools;
+import com.artemis.lottery.common.TokenTools;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

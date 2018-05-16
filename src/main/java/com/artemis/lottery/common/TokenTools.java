@@ -1,6 +1,5 @@
-package com.artemis.lottery.config;
+package com.artemis.lottery.common;
 
-import com.artemis.lottery.common.SHATools;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,7 +33,7 @@ public class TokenTools {
         return redisTemplate.hasKey(TOKEN_KEY + username);
     }
 
-    public String get(String username) {
+    private String get(String username) {
         return redisTemplate.opsForValue().get(TOKEN_KEY + username);
     }
 

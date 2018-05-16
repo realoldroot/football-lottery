@@ -10,13 +10,14 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 短信工具类
@@ -28,7 +29,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class SMSTools {
 
-    private static final Map<String, Integer> SMS = new ConcurrentHashMap<>();
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    private static final String SMS_KEY = "SMS_";
 
     private static final String BUSINESS_LIMIT_CONTROL = "isv.BUSINESS_LIMIT_CONTROL";
     private static final String OK = "OK";
@@ -49,9 +53,8 @@ public class SMSTools {
     private String templateParam;
 
     public void verify(String phoneNumber, int sms) throws Exception {
-        if (SMS.containsKey(phoneNumber)) {
-            if (sms == SMS.get(phoneNumber)) {
-                SMS.remove(phoneNumber);
+        if (containsKey(phoneNumber)) {
+            if (sms == get(phoneNumber)) {
                 return;
             }
         }
@@ -67,15 +70,11 @@ public class SMSTools {
      */
     public int sendSms(String phoneNumber) throws Exception {
 
-
         int code = (int) (Math.random() * 900000) + 100000;
         log.debug("验证码：" + code);
-
         String newTemplateParam = templateParam.replace("codeValue", code + "");
-
         sendSms(phoneNumber, templateCode, newTemplateParam);
-
-        SMS.put(phoneNumber, code);
+        put(phoneNumber, code);
         return code;
     }
 
@@ -172,5 +171,17 @@ public class SMSTools {
         //hint 此处可能会抛出异常，注意catch
 
         return acsClient.getAcsResponse(request);
+    }
+
+    private boolean containsKey(String phoneNumber) {
+        return redisTemplate.hasKey(SMS_KEY + phoneNumber);
+    }
+
+    private Integer get(String phoneNumber) {
+        return Integer.parseInt(redisTemplate.opsForValue().get(SMS_KEY + phoneNumber));
+    }
+
+    private void put(String phoneNumber, int smsCode) {
+        redisTemplate.opsForValue().set(SMS_KEY + phoneNumber, smsCode + "", 300, TimeUnit.SECONDS);
     }
 }

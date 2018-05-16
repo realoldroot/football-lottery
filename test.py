@@ -22,5 +22,13 @@ def currentTeam():
     print(r.text)
 
 
+def sms():
+    url = base_url + '/system/sms'
+    data = {'username': '18310860399'}
+    r = requests.post(url, json=data)
+    print(r.status_code)
+    print(r.text)
+
+
 if __name__ == '__main__':
-    login()
+    sms()
