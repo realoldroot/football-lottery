@@ -33,7 +33,7 @@ public class TokenTools {
         return redisTemplate.hasKey(TOKEN_KEY + username);
     }
 
-    private String get(String username) {
+    public String get(String username) {
         return redisTemplate.opsForValue().get(TOKEN_KEY + username);
     }
 
@@ -46,5 +46,25 @@ public class TokenTools {
      */
     public boolean verifyToken(String username, String token) {
         return StringUtils.equals(get(username), token);
+    }
+
+    /**
+     * 校验签名
+     *
+     * @param username  用户名
+     * @param timestamp 时间戳
+     * @param sign      签名
+     * @return 校验成功/失败
+     */
+    public boolean verifyToken(String username, String timestamp, String sign) {
+        if (StringUtils.isAnyEmpty(username, timestamp, sign)) {
+            return false;
+        }
+        if (has(username)) {
+            String s = SHATools.SHA256(username + get(username) + timestamp);
+            return StringUtils.equals(s, sign);
+        } else {
+            return false;
+        }
     }
 }

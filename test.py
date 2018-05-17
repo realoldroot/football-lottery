@@ -1,6 +1,6 @@
 import requests, json
 
-base_url = 'http://localhost:8080'
+base_url = 'http://192.168.0.120:8080'
 
 
 def login():
@@ -16,7 +16,9 @@ def login():
 
 def currentTeam():
     url = base_url + '/lottery/next'
-    r = requests.get(url)
+    headers = {'username': '17600116321', 'timestamp': '1526526195294',
+               'sign': 'baa6f60067ba0fc4a552ebec11eded5084697fddc9fca5ce4faade3ee9c12adf'}
+    r = requests.get(url, headers=headers)
     print(r.status_code)
     print(r.text)
 
@@ -29,5 +31,13 @@ def sms():
     print(r.text)
 
 
+def query():
+    url = base_url + '/lottery/query'
+    data = {'no': 2018050910, 'username': '18310860399'}
+    r = requests.post(url, json=data)
+    print(r.status_code)
+    print(r.text)
+
+
 if __name__ == '__main__':
-    login()
+    query()

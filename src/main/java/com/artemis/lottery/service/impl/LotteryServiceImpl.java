@@ -27,7 +27,7 @@ public class LotteryServiceImpl implements LotteryService {
     private FootballTeamRepository footballTeamRepository;
 
     @Override
-    public void query(Long no, String username) {
+    public ChoiceTeam query(Long no, String username) {
 
         //查出开奖内容
         FootballTeam team = footballTeamRepository.findById(no).orElseThrow(() -> new EntityNotFoundException("错误的期号"));
@@ -39,6 +39,7 @@ public class LotteryServiceImpl implements LotteryService {
         if (team.getWinners().size() >= 3) {
             log.debug("用户中奖了。。{}", user);
         }
+        return user;
 
     }
 }

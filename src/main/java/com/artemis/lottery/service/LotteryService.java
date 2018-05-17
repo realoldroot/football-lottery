@@ -1,5 +1,7 @@
 package com.artemis.lottery.service;
 
+import com.artemis.lottery.domain.ChoiceTeam;
+
 /**
  * @author zhengenshen
  * @date 2018-05-15 16:04
@@ -7,5 +9,5 @@ package com.artemis.lottery.service;
 
 public interface LotteryService {
 
-    void query(Long no, String username);
+    ChoiceTeam query(Long no, String username);
 }
