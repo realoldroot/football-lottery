@@ -2,8 +2,12 @@ package com.artemis.lottery.service.impl;
 
 import com.artemis.lottery.domain.PubIntegrals;
 import com.artemis.lottery.repository.PubIntegralsRepository;
+import com.artemis.lottery.service.BcUsersService;
 import com.artemis.lottery.service.PubIntegralsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
 
 /**
  * @author zhengenshen
@@ -12,4 +16,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PubIntegralsServiceImpl extends AbstractBaseService<PubIntegralsRepository, PubIntegrals> implements PubIntegralsService {
+
+    @Autowired
+    private BcUsersService bcUsersService;
+
+
+    @Override
+    public PubIntegrals findByBcUser(String username) {
+        Integer bcUserId = bcUsersService.findByUser(username).getId();
+        return r.findByBcUserId(bcUserId).orElseThrow(EntityNotFoundException::new);
+    }
 }

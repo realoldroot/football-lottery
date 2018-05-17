@@ -12,10 +12,14 @@ public class RespUser {
 
     private String username;
     private String nickname;
-    private Integer scores;
+    // 充值积分
+    private Integer gameCredits;
+    // 赠送积分
+    private Integer presentExp;
     private String token;
 
 
     public RespUser() {
     }
+
 }

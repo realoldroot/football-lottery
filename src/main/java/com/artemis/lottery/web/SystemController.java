@@ -1,7 +1,5 @@
 package com.artemis.lottery.web;
 
-import com.artemis.lottery.common.TokenTools;
-import com.artemis.lottery.domain.LoginUsers;
 import com.artemis.lottery.domain.RespUser;
 import com.artemis.lottery.service.LoginUsersService;
 import io.swagger.annotations.Api;
@@ -30,22 +28,12 @@ public class SystemController {
     @Autowired
     private LoginUsersService loginUsersService;
 
-    @Autowired
-    private TokenTools tokenTools;
 
-
-    @ApiOperation("登陆")
+    @ApiOperation(value = "登陆", notes = "登陆只需要传username和password就可以了，密码请使用RSA加密")
     @PostMapping("/login")
     public RespUser login(@RequestBody UserParams params) throws Exception {
 
-        LoginUsers login = loginUsersService.login(params.username, params.password);
-
-        log.debug("成功 登陆 {}", login);
-
-        RespUser r = new RespUser();
-        r.setToken(tokenTools.build(login.getBcPhone()));
-
-        return r;
+        return loginUsersService.login(params.username, params.password);
 
     }
 

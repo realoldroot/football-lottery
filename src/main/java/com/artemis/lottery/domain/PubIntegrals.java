@@ -2,10 +2,7 @@ package com.artemis.lottery.domain;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author zhengenshen
@@ -18,15 +15,15 @@ import javax.persistence.Table;
 public class PubIntegrals {
 
     @Id
-    @Column(name = "pubIntegralID")
+    @Column(name = "pubintegralid")
     private Integer id;
-    @Column(name = "bcUserID")
+    @Column(name = "bcuserid")
     private Integer bcUserId;
-    @Column(name = "gameLoft")
+    @Column(name = "gameloft")
     private String gameLoft;
-    @Column(name = "gameCredits")
+    @Column(name = "gamecredits")
     private Integer gameCredits;
-    @Column(name = "PresentExp")
+    @Column(name = "presentexp")
     private Integer PresentExp;
 
 }

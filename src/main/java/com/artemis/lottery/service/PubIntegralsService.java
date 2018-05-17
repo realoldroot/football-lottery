@@ -8,4 +8,6 @@ import com.artemis.lottery.domain.PubIntegrals;
  */
 
 public interface PubIntegralsService extends BaseService<PubIntegrals> {
+
+    PubIntegrals findByBcUser(String username);
 }

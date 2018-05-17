@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.stream.Stream;
 
 /**
  * @author zhengenshen
@@ -19,10 +18,10 @@ import java.util.stream.Stream;
 public class BcUsers {
 
     @Id
-    @Column(name = "bcUserID")
+    @Column(name = "bcuserid")
     private Integer id;
-    @Column(name = "bcPhone")
+    @Column(name = "bcphone")
     private String bcPhone;
-    @Column(name = "gameLoft")
-    private Stream gameLoft;
+    @Column(name = "gameloft")
+    private String gameLoft;
 }

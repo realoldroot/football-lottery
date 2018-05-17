@@ -1,6 +1,7 @@
 package com.artemis.lottery.service;
 
 import com.artemis.lottery.domain.LoginUsers;
+import com.artemis.lottery.domain.RespUser;
 
 /**
  * @author zhengenshen
@@ -9,5 +10,5 @@ import com.artemis.lottery.domain.LoginUsers;
 
 public interface LoginUsersService extends BaseService<LoginUsers> {
 
-    LoginUsers login(String username, String password);
+    RespUser login(String username, String password) throws Exception;
 }
