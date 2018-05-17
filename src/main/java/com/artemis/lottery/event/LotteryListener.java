@@ -5,6 +5,7 @@ import com.artemis.lottery.domain.FootballTeam;
 import com.artemis.lottery.domain.LotteryResult;
 import com.artemis.lottery.domain.Response;
 import com.artemis.lottery.repository.ChoiceTeamRepository;
+import com.artemis.lottery.service.RandomPhoneNumber;
 import com.artemis.lottery.socket.OnlineManage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 抽奖事件监听器
@@ -46,12 +46,12 @@ public class LotteryListener {
 
         if (win == null || win.size() == 0) {
             log.debug("没有人中奖，随机中奖人");
-            List<String> sss = Stream.of("183****0399", "183****0391").collect(Collectors.toList());
+            List<String> random = RandomPhoneNumber.build(10);
 
-            l.setUsers(sss);
+            l.setUsers(random);
 
             Response r = new Response();
-            r.setCode(1);
+            r.setStatus(0);
             r.setData(l);
             OnlineManage.broadcast(r);
             return;
@@ -60,7 +60,7 @@ public class LotteryListener {
 
         List<String> users = win.stream().map(ChoiceTeam::getUsername).collect(Collectors.toList());
         Response r = new Response();
-        r.setCode(1);
+        r.setStatus(0);
         l.setUsers(users);
         OnlineManage.broadcast(l);
     }

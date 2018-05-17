@@ -23,7 +23,6 @@ public class PubIntegralsServiceImpl extends AbstractBaseService<PubIntegralsRep
 
     @Override
     public PubIntegrals findByBcUser(String username) {
-        Integer bcUserId = bcUsersService.findByUser(username).getId();
-        return r.findByBcUserId(bcUserId).orElseThrow(EntityNotFoundException::new);
+        return r.findByBcUser(username).orElseThrow(EntityNotFoundException::new);
     }
 }

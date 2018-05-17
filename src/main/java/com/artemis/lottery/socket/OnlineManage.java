@@ -65,7 +65,7 @@ public class OnlineManage {
     public static void online(Channel channel) {
         add(channel);
         Response r = new Response();
-        r.setCode(0);
+        r.setStatus(0);
         r.setMessage("登陆成功");
         channel.writeAndFlush(r);
     }

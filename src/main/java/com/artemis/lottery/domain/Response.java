@@ -11,18 +11,25 @@ import lombok.Data;
 @Data
 public class Response {
 
-    private int code;
+    private int status;
 
     private String message;
 
     private Object data;
 
     public Response(Object data) {
-        this.code = 0;
+        this.status = 0;
         this.message = "成功";
         this.data = data;
     }
 
     public Response() {
+    }
+
+    public static Response error(String errMessage) {
+        Response response = new Response();
+        response.setStatus(1);
+        response.setMessage(errMessage);
+        return response;
     }
 }

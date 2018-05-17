@@ -39,7 +39,7 @@ public class LoginUsersServiceImpl extends AbstractBaseService<LoginUsersReposit
         }
 
         LoginUsers lu = r.findByBcPhoneAndPassword(username, decode)
-                .orElseThrow(() -> new EntityNotFoundException("用户不存在"));
+                .orElseThrow(() -> new EntityNotFoundException("账号或密码错误"));
 
         PubIntegrals pi = pubIntegralsService.findByBcUser(username);
 

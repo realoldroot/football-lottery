@@ -1,9 +1,8 @@
 package com.artemis.lottery.config;
 
+import com.artemis.lottery.domain.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.persistence.EntityNotFoundException;
@@ -20,13 +19,12 @@ import javax.security.auth.message.AuthException;
 public class ExceptionController {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "没有查询到对应数据")
-    public void entityNotFoundException() {
+    public Response entityNotFoundException(EntityNotFoundException e) {
+        return Response.error(e.getMessage());
     }
 
     @ExceptionHandler(AuthException.class)
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "账号或密码错误")
-    public void authException() {
-
+    public Response authException(AuthException e) {
+        return Response.error(e.getMessage());
     }
 }

@@ -1,6 +1,7 @@
 package com.artemis.lottery;
 
 import com.artemis.lottery.domain.PubIntegrals;
+import com.artemis.lottery.repository.PubIntegralsRepository;
 import com.artemis.lottery.service.PubIntegralsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +21,13 @@ public class PubIntegralsTest {
     @Autowired
     private PubIntegralsService service;
 
+    @Autowired
+    private PubIntegralsRepository repository;
+
     @Test
     public void query() {
 
-        PubIntegrals byBcUser = service.findByBcUser("17600116321");
-        System.out.println(byBcUser);
+        PubIntegrals pubIntegrals = repository.findByBcUser("17600116321").get();
+        System.out.println(pubIntegrals);
     }
 }

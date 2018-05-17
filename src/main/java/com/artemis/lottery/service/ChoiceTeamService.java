@@ -10,4 +10,7 @@ import com.artemis.lottery.domain.ChoiceTeam;
  */
 
 public interface ChoiceTeamService extends BaseService<ChoiceTeam> {
+
+    @Override
+    void save(ChoiceTeam choiceTeam);
 }
