@@ -55,7 +55,7 @@ public class ScheduleTask {
      * 随机取出来3个号码 和1个获胜队伍，更新数据
      */
     @Scheduled(cron = "0 */10 * * * ?")
-    public void lottery() {
+    public void lottery() throws Exception {
 
         String yyyyMMddHHmm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         long id = Long.parseLong(yyyyMMddHHmm) / 10 * 10;

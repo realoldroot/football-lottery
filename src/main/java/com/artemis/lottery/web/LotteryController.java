@@ -48,7 +48,7 @@ public class LotteryController {
 
     @ApiOperation("下注")
     @PostMapping("/save")
-    public void bet(@RequestBody ChoiceTeam team) {
+    public void bet(@RequestBody ChoiceTeam team) throws Exception {
         choiceTeamService.save(team);
     }
 

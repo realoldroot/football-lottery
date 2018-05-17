@@ -49,5 +49,8 @@ public class FootballTeam {
      */
     private String winnerTeam;
 
-
+    /**
+     * 开奖金额
+     */
+    private Integer lotteryAmount;
 }

@@ -21,7 +21,7 @@ public abstract class AbstractBaseService<R extends CrudRepository, T> implement
     private FootballTeamRepository repository;
 
     @Override
-    public void save(T t) {
+    public void save(T t) throws Exception {
         r.save(t);
     }
 

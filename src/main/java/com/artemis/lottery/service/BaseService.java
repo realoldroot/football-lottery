@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BaseService<T> {
 
-    void save(T t);
+    void save(T t) throws Exception;
 
     void saveAll(List<T> t);
 }
