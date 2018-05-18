@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 选择团队
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
  * @date 2018-05-08 14:15
  */
 @Service
+@Transactional
 public class ChoiceTeamServiceImpl extends AbstractBaseService<ChoiceTeamRepository, ChoiceTeam> implements ChoiceTeamService {
 
     @Autowired
@@ -40,6 +42,7 @@ public class ChoiceTeamServiceImpl extends AbstractBaseService<ChoiceTeamReposit
     @Override
     public void save(ChoiceTeam choiceTeam) throws Exception {
 
+        choiceTeam.setId(Long.parseLong(StringUtils.substring(choiceTeam.getUsername(), 7, 11) + System.currentTimeMillis()));
         PubIntegrals pi = pubIntegralsService.findByBcUser(choiceTeam.getUsername());
         int totalScore = count(pi);
 
@@ -71,9 +74,9 @@ public class ChoiceTeamServiceImpl extends AbstractBaseService<ChoiceTeamReposit
         // return pi.getGameCredits() + pi.getPresentExp();
     }
 
-    private ExpensesRecord buildRecord(ChoiceTeam choiceTeam, Integer balance) throws Exception {
+    private ExpensesRecord buildRecord(ChoiceTeam choiceTeam, Integer balance) {
         ExpensesRecord record = new ExpensesRecord();
-        record.setId(Long.parseLong(System.currentTimeMillis() + choiceTeam.getUsername()));
+        record.setId(Long.parseLong(StringUtils.substring(choiceTeam.getUsername(), 7, 11) + System.currentTimeMillis()));
         record.setExpenditure(choiceTeam.getScore());
         record.setExpenditure(balance);
         record.setNo(choiceTeam.getNo());
@@ -92,7 +95,7 @@ public class ChoiceTeamServiceImpl extends AbstractBaseService<ChoiceTeamReposit
             i += score;
             redisTemplate.opsForValue().set(scoreKey, i + "");
         } else {
-            int i = Integer.parseInt(s);
+            int i = 0;
             redisTemplate.opsForValue().set(scoreKey, i + "");
         }
     }

@@ -16,4 +16,8 @@ public interface LotteryService {
     List<ChoiceTeam> query(Long no, String username);
 
     Page<FootballTeam> query();
+
+    Page<ChoiceTeam> query(String username, Integer page, Integer pageSize);
+
+    Page<FootballTeam> queryHistory(Integer page, Integer pageSize);
 }

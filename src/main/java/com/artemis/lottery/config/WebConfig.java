@@ -21,7 +21,8 @@ public class WebConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenInterceptor).addPathPatterns("/lottery/**");
+        // registry.addInterceptor(tokenInterceptor).addPathPatterns("/lottery/**","/user/**");
+        super.addInterceptors(registry);
     }
 
     @Override

@@ -12,4 +12,9 @@ public class QueryParams {
 
     private Long no;
     private String username;
+
+    private Integer page;
+
+    private Integer pageSize;
+
 }

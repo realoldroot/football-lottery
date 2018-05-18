@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "pubintegrals")
-public class PubIntegrals extends LoginUsers {
+public class PubIntegrals {
 
     @Id
     @Column(name = "pubintegralid")

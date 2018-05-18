@@ -41,11 +41,48 @@ def query():
 
 def user_info():
     url = base_url + '/user/info'
-    data = {'username', '17600116321'}
+    data = {'username': '17600116321'}
+    r = requests.post(url, json=data)
+    print(r.status_code)
+    print(r.text)
+
+
+def save():
+    url = base_url + '/lottery/save'
+    data = {
+        'username': '17600116321',
+        'no': 2018051801150,
+        'teamName': 'red',
+        'playerNumbers': ["r_11", "b_8", "b_22"],
+        'score': 10
+    }
+    r = requests.post(url, json=data)
+    print(r.status_code)
+    print(r.text)
+
+
+def get_query():
+    url = base_url + '/lottery/query'
+    r = requests.get(url)
+    print(r.status_code)
+    print(r.text)
+
+
+def query_user():
+    url = base_url + '/lottery/queryByUser'
+    data = {'username': '17600116321', 'page': 0, 'pageSize': 4}
+    r = requests.post(url, json=data)
+    print(r.status_code)
+    print(r.text)
+
+
+def query_history():
+    url = base_url + '/lottery/queryHistory'
+    data = {'page': 0, 'pageSize': 4}
     r = requests.post(url, json=data)
     print(r.status_code)
     print(r.text)
 
 
 if __name__ == '__main__':
-    user_info()
+    query_history()

@@ -61,6 +61,23 @@ public class LotteryController {
         return lotteryService.query(params.getNo(), params.getUsername());
     }
 
+    /**
+     * 查询历史下注信息
+     */
+    @PostMapping("/queryHistory")
+    public Page<FootballTeam> queryHistory(@RequestBody QueryParams params) {
+        return lotteryService.queryHistory(params.getPage(), params.getPageSize());
+    }
+
+    /**
+     * 根据用户分页查询
+     */
+    @PostMapping("/queryByUser")
+
+    public Page<ChoiceTeam> page(@RequestBody QueryParams params) {
+        return lotteryService.query(params.getUsername(), params.getPage(), params.getPageSize());
+    }
+
     @GetMapping("/query")
     public Page<FootballTeam> query() {
         return lotteryService.query();

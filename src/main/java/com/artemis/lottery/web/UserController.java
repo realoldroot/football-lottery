@@ -5,10 +5,7 @@ import com.artemis.lottery.domain.QueryParams;
 import com.artemis.lottery.domain.RespUser;
 import com.artemis.lottery.service.PubIntegralsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author zhengenshen
@@ -22,7 +19,13 @@ public class UserController {
     @Autowired
     private PubIntegralsService pubIntegralsService;
 
-    @GetMapping("/info")
+    /**
+     * 用户信息
+     *
+     * @param params 用户手机号
+     * @return 用户信息
+     */
+    @PostMapping("/info")
     public RespUser user(@RequestBody QueryParams params) {
 
         PubIntegrals pi = pubIntegralsService.findByBcUser(params.getUsername());

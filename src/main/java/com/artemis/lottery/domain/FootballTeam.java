@@ -52,5 +52,12 @@ public class FootballTeam {
     /**
      * 开奖金额
      */
-    private Integer lotteryAmount;
+    private int lotteryAmount;
+
+    /**
+     * 单笔金额
+     */
+    private int singleAmount;
+
+    private int userCount;
 }
