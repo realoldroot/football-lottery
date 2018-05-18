@@ -4,12 +4,12 @@ import com.artemis.lottery.domain.ChoiceTeam;
 import com.artemis.lottery.domain.ExpensesRecord;
 import com.artemis.lottery.domain.PubIntegrals;
 import com.artemis.lottery.repository.ChoiceTeamRepository;
+import com.artemis.lottery.service.BonusPool;
 import com.artemis.lottery.service.ChoiceTeamService;
 import com.artemis.lottery.service.ExpensesRecordService;
 import com.artemis.lottery.service.PubIntegralsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,14 +30,10 @@ public class ChoiceTeamServiceImpl extends AbstractBaseService<ChoiceTeamReposit
     private ExpensesRecordService expensesRecordService;
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
-    private String scoreKey = "SCORE";
+    private BonusPool bonusPool;
 
     /**
      * 重写保存方法
-     *
-     * @param choiceTeam
      */
     @Override
     public void save(ChoiceTeam choiceTeam) throws Exception {
@@ -52,13 +48,14 @@ public class ChoiceTeamServiceImpl extends AbstractBaseService<ChoiceTeamReposit
             Integer balance = pi.getPresentExp() - choiceTeam.getScore();
             pi.setGameCredits(balance);
 
+            //更新用户积分
+            pubIntegralsService.save(pi);
+            //保存记录
             r.save(choiceTeam);
 
             ExpensesRecord record = buildRecord(choiceTeam, balance);
             //保存记录
             expensesRecordService.save(record);
-            //更新用户积分
-            pubIntegralsService.save(pi);
             //更新缓存积分
             updateScore(choiceTeam.getScore());
 
@@ -89,14 +86,6 @@ public class ChoiceTeamServiceImpl extends AbstractBaseService<ChoiceTeamReposit
      * @param score 积分
      */
     private void updateScore(int score) {
-        String s = redisTemplate.opsForValue().get(scoreKey);
-        if (StringUtils.isNotEmpty(s)) {
-            int i = Integer.parseInt(s);
-            i += score;
-            redisTemplate.opsForValue().set(scoreKey, i + "");
-        } else {
-            int i = 0;
-            redisTemplate.opsForValue().set(scoreKey, i + "");
-        }
+        bonusPool.add(score);
     }
 }

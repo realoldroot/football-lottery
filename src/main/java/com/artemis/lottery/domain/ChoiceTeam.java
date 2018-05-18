@@ -40,7 +40,12 @@ public class ChoiceTeam {
     /**
      * 下注积分
      */
-    private Integer score;
+    private int score;
+
+    /**
+     * 下了多少注
+     */
+    private int pet;
 
     /**
      * 状态 中奖还是未中奖。

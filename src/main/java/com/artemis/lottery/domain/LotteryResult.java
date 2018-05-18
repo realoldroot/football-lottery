@@ -25,9 +25,11 @@ public class LotteryResult {
     /**
      * 注
      */
-    private Integer bet;
+    private int bet;
 
-    private Integer totalAmount;
+    private int totalAmount;
+
+    private int singleAmount;
 
     private List<String> users;
 

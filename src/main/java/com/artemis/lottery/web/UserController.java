@@ -1,11 +1,13 @@
 package com.artemis.lottery.web;
 
-import com.artemis.lottery.domain.PubIntegrals;
 import com.artemis.lottery.domain.QueryParams;
 import com.artemis.lottery.domain.RespUser;
 import com.artemis.lottery.service.PubIntegralsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author zhengenshen
@@ -28,12 +30,7 @@ public class UserController {
     @PostMapping("/info")
     public RespUser user(@RequestBody QueryParams params) {
 
-        PubIntegrals pi = pubIntegralsService.findByBcUser(params.getUsername());
-        RespUser r = new RespUser();
-        r.setUsername(params.getUsername());
-        r.setGameCredits(pi.getGameCredits());
-        r.setPresentExp(pi.getPresentExp());
-        return r;
+        return pubIntegralsService.userInfo(params.getUsername());
     }
 
 }
