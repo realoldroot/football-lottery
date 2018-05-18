@@ -17,7 +17,7 @@
             </encoder>
         </appender>
         <logger name="com.artemis" level="debug"/>
-        <root level="info">
+        <root level="debug">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>

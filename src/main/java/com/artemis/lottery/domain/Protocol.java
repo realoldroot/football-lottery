@@ -16,5 +16,5 @@ public class Protocol {
 
     private String token;
 
-    //{"type":0,"username":"17600116321","token":"491e7af2f07b1932314b2c3fc9a566cff324739e9e85598f6da85deb6ff5e3d3"}
+    //{"type":0,"username":"上","token":"18ef6f43e0aae41a5f3bc159a27b81c928678d148c1ba277d95d89efc53eef2d"}
 }

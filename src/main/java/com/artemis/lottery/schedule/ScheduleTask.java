@@ -54,7 +54,7 @@ public class ScheduleTask {
      * 取出来 选手的号码。
      * 随机取出来3个号码 和1个获胜队伍，更新数据
      */
-    @Scheduled(cron = "0 */10 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void lottery() throws Exception {
 
         String yyyyMMddHHmm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
@@ -67,7 +67,7 @@ public class ScheduleTask {
         }
         if (footballTeam.getStatus() == 1) {
             log.debug("第{}期已经开奖", id);
-            return;
+            // return;
         }
         log.debug("开奖，第{}期", id);
 

@@ -39,5 +39,13 @@ def query():
     print(r.text)
 
 
+def user_info():
+    url = base_url + '/user/info'
+    data = {'username', '17600116321'}
+    r = requests.post(url, json=data)
+    print(r.status_code)
+    print(r.text)
+
+
 if __name__ == '__main__':
-    login()
+    user_info()

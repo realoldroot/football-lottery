@@ -22,6 +22,13 @@ public class LotteryResult {
 
     private String winnerTeam;
 
+    /**
+     * 注
+     */
+    private Integer bet;
+
+    private Integer totalAmount;
+
     private List<String> users;
 
 }

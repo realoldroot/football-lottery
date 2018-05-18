@@ -30,13 +30,6 @@ public class ChoiceTeamTest {
     @Test
     public void save() {
 
-        ChoiceTeam team = new ChoiceTeam();
-        team.setId(System.currentTimeMillis());
-        team.setUsername("18310860399");
-        team.setTeamName("red");
-        team.setPlayerNumbers(Stream.of("b_10", "b_11", "r_12").collect(Collectors.toSet()));
-        team.setScore(10);
-        choiceTeamService.save(team);
     }
 
 
@@ -48,7 +41,6 @@ public class ChoiceTeamTest {
 
     @Test
     public void kaijiang() {
-        scheduleTask.lottery();
     }
 
 

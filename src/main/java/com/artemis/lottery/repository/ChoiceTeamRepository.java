@@ -16,7 +16,7 @@ import java.util.Set;
 
 public interface ChoiceTeamRepository extends MongoRepository<ChoiceTeam, Long> {
 
-    Optional<ChoiceTeam> findByUsername(String username);
+    // List<ChoiceTeam> findByUsername(String username);
 
     Optional<ChoiceTeam> findByUsernameAndNo(String username, Long no);
 

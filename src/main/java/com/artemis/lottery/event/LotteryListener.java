@@ -62,6 +62,8 @@ public class LotteryListener {
         Response r = new Response();
         r.setStatus(0);
         l.setUsers(users);
+        l.setBet(13);
+        l.setTotalAmount(500000);
         OnlineManage.broadcast(l);
     }
 

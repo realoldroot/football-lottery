@@ -1,6 +1,10 @@
 package com.artemis.lottery.service;
 
 import com.artemis.lottery.domain.ChoiceTeam;
+import com.artemis.lottery.domain.FootballTeam;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 /**
  * @author zhengenshen
@@ -9,5 +13,7 @@ import com.artemis.lottery.domain.ChoiceTeam;
 
 public interface LotteryService {
 
-    ChoiceTeam query(Long no, String username);
+    List<ChoiceTeam> query(Long no, String username);
+
+    Page<FootballTeam> query();
 }

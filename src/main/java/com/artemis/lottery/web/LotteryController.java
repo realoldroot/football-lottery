@@ -2,14 +2,17 @@ package com.artemis.lottery.web;
 
 import com.artemis.lottery.domain.ChoiceTeam;
 import com.artemis.lottery.domain.FootballTeam;
+import com.artemis.lottery.domain.QueryParams;
 import com.artemis.lottery.service.ChoiceTeamService;
 import com.artemis.lottery.service.FootballTeamService;
 import com.artemis.lottery.service.LotteryService;
 import io.swagger.annotations.ApiOperation;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 获奖
@@ -52,16 +55,16 @@ public class LotteryController {
         choiceTeamService.save(team);
     }
 
-    @ApiOperation("根据期号查询下注信息")
+    @ApiOperation("根据条件查询下注信息")
     @PostMapping("/query")
-    public ChoiceTeam query(@RequestBody QueryParams params) {
+    public List<ChoiceTeam> query(@RequestBody QueryParams params) {
         return lotteryService.query(params.getNo(), params.getUsername());
     }
 
-    @Data
-    private static class QueryParams {
-
-        private Long no;
-        private String username;
+    @GetMapping("/query")
+    public Page<FootballTeam> query() {
+        return lotteryService.query();
     }
+
+
 }

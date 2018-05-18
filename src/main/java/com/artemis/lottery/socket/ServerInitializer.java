@@ -7,7 +7,6 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +39,7 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
         //处理心跳
         // pipeline.addLast(new IdleStateHandler(400, 400, 400, TimeUnit.SECONDS));
         // pipeline.addLast(new HeartbeatHandler());
-        ch.pipeline().addLast(new ReadTimeoutHandler(120));
+        // ch.pipeline().addLast(new ReadTimeoutHandler(120));
 
         pipeline.addLast(new StringDecoder(Charset.forName("UTF-8")));
         pipeline.addLast(new StringEncoder(Charset.forName("UTF-8")));
