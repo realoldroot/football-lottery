@@ -17,6 +17,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -94,40 +95,46 @@ public class LotteryListener {
 
 
         //拿到缓存中奖金池的金额 （实际销售金额）
-        int realAmount = bonusPool.get();
+        BigDecimal realAmount = new BigDecimal(bonusPool.get());
+        BigDecimal settingAmount = new BigDecimal(controller.getSettingAmount());
+        BigDecimal totalAmount = new BigDecimal(realAmount.add(settingAmount).floatValue());
 
-        winTeam.setRealAmount(realAmount);
+        winTeam.setRealAmount(realAmount.floatValue());
         winTeam.setSettingAmount(controller.getSettingAmount());
-        winTeam.setTotalAmount(realAmount + controller.getSettingAmount());
+        winTeam.setTotalAmount(realAmount.add(settingAmount).floatValue());
 
         //中奖人数
         int userCount = winTeam.getUsers().size();
 
+        int scale = 2;
+
         //有人中奖
         if (realUsers != null && realUsers.size() > 0) {
+            BigDecimal half = new BigDecimal(0.5);
 
             // 虚拟注数=(宣称奖池-实际销售额*0.5)/(实际销售额*0.5/实际中奖注数)
-            int bet = (int) ((controller.getSettingAmount() - realAmount * 0.5) / (realAmount * 0.5 / userCount));
-            winTeam.setBet(winTeam.getBet() + bet);
+            // int bet = (int) ((controller.getSettingAmount() - realAmount * 0.5) / (realAmount * 0.5 / userCount));
+            BigDecimal bet = settingAmount.subtract(realAmount.multiply(half))
+                    .divide(realAmount.multiply(half).divide(new BigDecimal(userCount), scale, BigDecimal.ROUND_DOWN), scale, BigDecimal.ROUND_DOWN);
+            // winTeam.setBet(winTeam.getBet() + bet);
+            winTeam.setBet(winTeam.getBet() + bet.intValue());
             //单注金额 = 实际销售额 / 总共下注数
-            float singleAmount = winTeam.getTotalAmount() / bet;
+            BigDecimal singleAmount = totalAmount.divide(bet, scale, BigDecimal.ROUND_DOWN);
 
-            winTeam.setSingleAmount(Float.valueOf(String.format("%.2f", singleAmount)));
+            winTeam.setSingleAmount(singleAmount.floatValue());
 
             // 本次开奖发放奖金 =  单注金额 * 中奖人数
-            float lastAmount = singleAmount * realUsers.size();
+            BigDecimal lastAmount = singleAmount.multiply(new BigDecimal(realUsers.size()));
 
             // 当前奖金池剩余金额 = 当前奖金池金额 - 发放的奖金
-            float totalAmount = realAmount - lastAmount;
-
+            BigDecimal balance = realAmount.subtract(lastAmount);
             //更新缓存中奖金
-            bonusPool.set(Float.valueOf(String.format("%.2f", totalAmount)));
-
+            bonusPool.set(balance.floatValue());
             //更新用户奖金
-            pubIntegralsService.updateAmount(singleAmount, realUsers);
-        } else {
-            float singleAmount = winTeam.getTotalAmount() / winTeam.getBet();
-            winTeam.setSingleAmount(Float.valueOf(String.format("%.2f", singleAmount)));
+            pubIntegralsService.updateAmount(singleAmount.floatValue(), realUsers);
+        } else if (winTeam.getBet() > 0) {
+            BigDecimal singleAmount = totalAmount.divide(new BigDecimal(winTeam.getBet()), scale, BigDecimal.ROUND_DOWN);
+            winTeam.setSingleAmount(singleAmount.floatValue());
         }
 
         // 保存开奖信息
@@ -136,13 +143,5 @@ public class LotteryListener {
         //广播
         OnlineManage.broadcast(new Response(winTeam));
 
-    }
-
-    public static void main(String[] args) {
-        int totalAmount = 500000;
-        int currentAmount = 10000;
-        int userCount = 5;
-        int bet = (int) ((totalAmount - currentAmount * 0.5) / (currentAmount * 0.5 / userCount));
-        System.out.println("总共几注" + bet);
     }
 }
