@@ -5,6 +5,7 @@ import com.artemis.lottery.socket.Server;
 import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -29,6 +30,12 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     @Autowired
     private ThreadPoolTaskScheduler taskScheduler;
 
+    @Value("${tcp-server-host}")
+    private String tcpServer;
+
+    @Value("${tcp-server-port}")
+    private int port;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         log.debug("ApplicationStartup --------------> ");
@@ -36,7 +43,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         // repository.saveAll(BuildData.build());
 
         taskScheduler.execute(() -> {
-            InetSocketAddress address = new InetSocketAddress("192.168.0.120", 9999);
+            InetSocketAddress address = new InetSocketAddress(tcpServer, port);
             ChannelFuture future = server.start(address);
             Runtime.getRuntime().addShutdownHook(new Thread(() -> server.destroy()));
             future.channel().closeFuture().syncUninterruptibly();
