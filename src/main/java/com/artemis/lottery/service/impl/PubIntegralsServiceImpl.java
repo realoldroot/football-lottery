@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 /**
  * @author zhengenshen
@@ -45,5 +46,12 @@ public class PubIntegralsServiceImpl extends AbstractBaseService<PubIntegralsRep
         Page<ChoiceTeam> page = choiceTeamRepository.findByUsername(username, PageRequest.of(0, 40, Sort.Direction.DESC, "no"));
         r.setRecord(page.getContent());
         return r;
+    }
+
+    @Override
+    public void updateAmount(float amount, List<String> username) {
+
+        r.updateAmount(amount, username);
+
     }
 }

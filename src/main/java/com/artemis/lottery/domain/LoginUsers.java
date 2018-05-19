@@ -18,6 +18,7 @@ import javax.persistence.Table;
 public class LoginUsers {
 
     @Id
+    @Column(name = "loginid")
     private int loginId;
     @Column(name = "bcphone")
     private String bcPhone;

@@ -33,7 +33,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     public void onApplicationEvent(ContextRefreshedEvent event) {
         log.debug("ApplicationStartup --------------> ");
         // repository.deleteAll();
-        // repository.saveAll(BuildData.phoneNumber());
+        // repository.saveAll(BuildData.build());
 
         taskScheduler.execute(() -> {
             InetSocketAddress address = new InetSocketAddress("192.168.0.120", 9999);

@@ -50,9 +50,19 @@ public class FootballTeam {
     private String winnerTeam;
 
     /**
+     * 当前实际金额
+     */
+    private float realAmount;
+
+    /**
+     * 预设金额
+     */
+    private float settingAmount;
+    /**
      * 开奖金额
      */
-    private int currentAmount;
+    private float totalAmount;
+
 
     /**
      * 几注
@@ -62,7 +72,7 @@ public class FootballTeam {
     /**
      * 单笔金额
      */
-    private int singleAmount;
+    private float singleAmount;
 
     private List<String> users;
 }

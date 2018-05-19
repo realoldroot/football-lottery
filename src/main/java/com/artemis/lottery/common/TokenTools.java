@@ -1,5 +1,6 @@
 package com.artemis.lottery.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
  * @date 2018-05-15 16:27
  */
 @Component
+@Slf4j
 public class TokenTools {
 
     @Autowired
@@ -58,6 +60,7 @@ public class TokenTools {
      */
     public boolean verifyToken(String username, String timestamp, String sign) {
         if (StringUtils.isAnyEmpty(username, timestamp, sign)) {
+            log.debug("校验失败，参数都为空");
             return false;
         }
         if (has(username)) {

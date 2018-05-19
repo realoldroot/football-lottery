@@ -42,7 +42,10 @@ def query():
 def user_info():
     url = base_url + '/user/info'
     data = {'username': '17600116321'}
-    r = requests.post(url, json=data)
+    headers = {'username': '17600116321',
+               'timestamp': '1526693917070',
+               'sign': '43fba6454aa2a6e9b548996e71d27bc58383e10397a97390ada14a74e6a9200f'}
+    r = requests.post(url, json=data, headers=headers)
     print(r.status_code)
     print(r.text)
 
@@ -85,4 +88,4 @@ def query_history():
 
 
 if __name__ == '__main__':
-    query_history()
+    login()

@@ -22,6 +22,14 @@ public interface ChoiceTeamRepository extends MongoRepository<ChoiceTeam, Long> 
 
     Optional<ChoiceTeam> findByUsernameAndNo(String username, Long no);
 
+    /**
+     * 根据期号，球队和球员查询 中奖人
+     *
+     * @param no            期号
+     * @param teamName      中奖球队名称
+     * @param playerNumbers 中奖球员
+     * @return 中奖人
+     */
     List<ChoiceTeam> findByNoAndTeamNameAndPlayerNumbers(Long no, String teamName, Set<String> playerNumbers);
 
     Page<ChoiceTeam> findByUsername(String username, Pageable pageable);

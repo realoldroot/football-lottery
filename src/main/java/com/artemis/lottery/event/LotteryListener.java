@@ -2,11 +2,14 @@ package com.artemis.lottery.event;
 
 import com.artemis.lottery.common.RandomTools;
 import com.artemis.lottery.domain.ChoiceTeam;
+import com.artemis.lottery.domain.Controller;
 import com.artemis.lottery.domain.FootballTeam;
 import com.artemis.lottery.domain.Response;
 import com.artemis.lottery.repository.ChoiceTeamRepository;
 import com.artemis.lottery.repository.FootballTeamRepository;
 import com.artemis.lottery.service.BonusPool;
+import com.artemis.lottery.service.ControllerService;
+import com.artemis.lottery.service.PubIntegralsService;
 import com.artemis.lottery.socket.OnlineManage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,35 +40,109 @@ public class LotteryListener {
     @Autowired
     private BonusPool bonusPool;
 
+    @Autowired
+    private ControllerService controllerService;
+
+    @Autowired
+    private PubIntegralsService pubIntegralsService;
+
+    /**
+     * 根据中奖信息 查询谁中奖了
+     * 根据中奖的人数来随机生成虚拟中奖人数和中奖注数
+     * 然后开奖，
+     */
     @Async
     @EventListener
     public void lottery(LotteryEvent event) {
+        List<String> totalUsers = new ArrayList<>();
+        List<String> randomUsers;
+        List<String> realUsers = null;
 
-        FootballTeam team = event.getFootballTeam();
+        FootballTeam winTeam = event.getFootballTeam();
+        winTeam.setStatus(1);
 
-        List<ChoiceTeam> win = choiceTeamRepository.findByNoAndTeamNameAndPlayerNumbers(team.getId(), team.getWinnerTeam(), team.getWinners());
+        List<ChoiceTeam> winners = choiceTeamRepository.findByNoAndTeamNameAndPlayerNumbers(winTeam.getId(), winTeam.getWinnerTeam(), winTeam.getWinners());
 
-        if (win == null || win.size() == 0) {
-            log.debug("没有人中奖，随机中奖人");
-            List<String> random = RandomTools.phoneNumber();
+        Controller controller = controllerService.find();
 
-            team.setUsers(random);
-            team.setBet(RandomTools.number(10));
-        } else {
-            log.debug("中奖的人有 {}", win);
-            List<String> users = win.stream().map(ChoiceTeam::getUsername).collect(Collectors.toList());
-            int bet = win.stream().map(ChoiceTeam::getPet).reduce((a, b) -> a + b).orElse(0);
+        //真的有中奖人
+        if (winners != null && winners.size() > 0) {
+            log.debug("中奖的人有 {}", winners);
+            //中奖人手机号
+            realUsers = winners.stream().map(ChoiceTeam::getUsername).collect(Collectors.toList());
+            totalUsers.addAll(realUsers);
 
-            team.setUsers(users);
-            team.setBet(bet);
+            //计算中奖人一共压了多少注
+            int bet = winners.stream().map(ChoiceTeam::getPet).reduce((a, b) -> a + b).orElse(0);
+            winTeam.setBet(bet);
+
+            //中奖人设置状态为中奖。
+            winners.forEach(w -> w.setStatus(1));
+
         }
 
-        //拿到总金额
-        int totalAmount = bonusPool.get();
-        team.setCurrentAmount(totalAmount);
+        //虚拟中奖人，根据后端设置的虚拟中奖人数
+        // randomUsers = RandomTools.phoneNumber(controller.getUserCount());
+        randomUsers = RandomTools.phoneNumber();
+        totalUsers.addAll(randomUsers);
 
-        OnlineManage.broadcast(new Response(team));
+        //中奖用户和虚拟用户都加进来
+        winTeam.setUsers(totalUsers);
 
-        footballTeamRepository.save(team);
+        //被数 = 中奖用户 倍数 + 虚拟用户数
+        winTeam.setBet(winTeam.getBet() + randomUsers.size());
+
+
+        //拿到缓存中奖金池的金额 （实际销售金额）
+        int realAmount = bonusPool.get();
+
+        winTeam.setRealAmount(realAmount);
+        winTeam.setSettingAmount(controller.getSettingAmount());
+        winTeam.setTotalAmount(realAmount + controller.getSettingAmount());
+
+        //中奖人数
+        int userCount = winTeam.getUsers().size();
+
+        //有人中奖
+        if (realUsers != null && realUsers.size() > 0) {
+
+            // 虚拟注数=(宣称奖池-实际销售额*0.5)/(实际销售额*0.5/实际中奖注数)
+            int bet = (int) ((controller.getSettingAmount() - realAmount * 0.5) / (realAmount * 0.5 / userCount));
+            winTeam.setBet(winTeam.getBet() + bet);
+            //单注金额 = 实际销售额 / 总共下注数
+            float singleAmount = winTeam.getTotalAmount() / bet;
+
+            winTeam.setSingleAmount(Float.valueOf(String.format("%.2f", singleAmount)));
+
+            // 本次开奖发放奖金 =  单注金额 * 中奖人数
+            float lastAmount = singleAmount * realUsers.size();
+
+            // 当前奖金池剩余金额 = 当前奖金池金额 - 发放的奖金
+            float totalAmount = realAmount - lastAmount;
+
+            //更新缓存中奖金
+            bonusPool.set(Float.valueOf(String.format("%.2f", totalAmount)));
+
+            //更新用户奖金
+            pubIntegralsService.updateAmount(singleAmount, realUsers);
+        } else {
+            float singleAmount = winTeam.getTotalAmount() / winTeam.getBet();
+            winTeam.setSingleAmount(Float.valueOf(String.format("%.2f", singleAmount)));
+        }
+
+        // 保存开奖信息
+        footballTeamRepository.save(winTeam);
+
+        //广播
+        OnlineManage.broadcast(new Response(winTeam));
+
+    }
+
+    public static void main(String[] args) {
+        int totalAmount = 500000;
+        int currentAmount = 10000;
+        int userCount = 5;
+        int bet = (int) ((totalAmount - currentAmount * 0.5) / (currentAmount * 0.5 / userCount));
+        System.out.println("总共几注" + bet);
     }
 }

@@ -21,7 +21,7 @@ public class BonusPool {
     private String key = "BONUS_POOL";
 
 
-    public void add(int v) {
+    public void add(float v) {
         redisTemplate.opsForValue().increment(key, v);
     }
 
@@ -32,5 +32,9 @@ public class BonusPool {
         } else {
             return 0;
         }
+    }
+
+    public void set(float amount) {
+        redisTemplate.opsForValue().increment(key, amount);
     }
 }
